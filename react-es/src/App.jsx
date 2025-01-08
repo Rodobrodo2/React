@@ -1,16 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
+import { useState } from "react";
+import Counter from "./Counter";
 
-class App extends Component {
+const App = () => {
 
-  title = "Hello World"
-
-  render() {
-    return (
+  return (
     <>
-      <h1>{this.title}</h1>
+      <Counter />
     </>
-    )
-  }
+  );
 }
 
 export default App;
