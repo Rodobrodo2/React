@@ -5,6 +5,7 @@ import LoginForm from "./LoginForm";
 import UncontrolledInput from "./UncontrolledInput";
 import ItemList from "./ItemList";
 import Card from "./Card";
+import TodoList from "./TodoList";
 import useFetch from "./useFetch";
 
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
@@ -37,16 +38,7 @@ const App = () => {
       <Card>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi architecto quae odit recusandae nam quod vitae esse dignissimos doloremque quo mollitia repellendus quidem laudantium, cum vel? Dolorem adipisci reiciendis nisi?</p>
       </Card>
-      <div>
-        <h1>Todo List</h1>
-        <ul>
-          {data && data.map((todo) => (
-            <li key={todo.id}>
-              {todo.title} - {todo.completed ? "Completato" : "Incompleto"}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <TodoList />
     </>
   );
 }
