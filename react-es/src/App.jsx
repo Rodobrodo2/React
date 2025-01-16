@@ -7,6 +7,7 @@ import ItemList from "./ItemList";
 import Card from "./Card";
 import TodoList from "./TodoList";
 import useFetch from "./hooks/useFetch";
+import useFilteredTodos from "./hooks/useFilteredTodos";
 
 const App = () => {
   const foodList = ["Salmone", "Hamburger", "Pepe", "Coriandolo"];
