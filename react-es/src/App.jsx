@@ -6,23 +6,11 @@ import UncontrolledInput from "./UncontrolledInput";
 import ItemList from "./ItemList";
 import Card from "./Card";
 import TodoList from "./TodoList";
-import useFetch from "./useFetch";
-
-const API_URL = "https://jsonplaceholder.typicode.com/todos";
+import useFetch from "./hooks/useFetch";
 
 const App = () => {
   const foodList = ["Salmone", "Hamburger", "Pepe", "Coriandolo"];
   const bathList = ["Shampo", "Ammorbidente", "Dentifricio", "Rasoio"];
-
-  const { data, isLoading, error } = useFetch(API_URL);
-
-  if (isLoading) {
-    return <p>Caricamento in corso...</p>;
-  }
-
-  if (error) {
-    return <p>Errore: {error}</p>;
-  }
 
   return (
     <>
