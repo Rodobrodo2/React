@@ -1,7 +1,7 @@
 import React from "react";
 import useFetch from "./hooks/useFetch";
 import useFilteredTodos from "./hooks/useFilteredTodos";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
@@ -9,6 +9,11 @@ const TodoList = () => {
   const { data, isLoading, error } = useFetch(API_URL);
   const  [searchTerm, setSearchTerm] = useState("");
   const filteredTodos = useFilteredTodos(data || [], searchTerm);
+
+  // Memorizza la funzione di gestione dell'input con useCallback
+  const handleSearchChange = useCallback((e) => {
+    setSearchTerm(e.target.value);
+  }, []); // Nessuna dipendenza: la funzione non cambi
 
   if (isLoading) {
     return <p>Caricamento in corso...</p>;
@@ -25,7 +30,7 @@ const TodoList = () => {
         type="text" 
         placeholder="Cerca..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={handleSearchChange}
       />
       <ul>
         {filteredTodos.map((todo) => (
