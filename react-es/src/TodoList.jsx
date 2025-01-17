@@ -1,13 +1,21 @@
 import React from "react";
 import useFetch from "./hooks/useFetch";
 import useFilteredTodos from "./hooks/useFilteredTodos";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 const TodoList = () => {
   const { data, isLoading, error } = useFetch(API_URL);
   const  [searchTerm, setSearchTerm] = useState("");
+
+  const searchInputRef = useRef(null);
+  
+  useEffect(() => {
+    if (data && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [data]);
   
   // Memorizza la funzione di gestione dell'input con useCallback
   const handleSearchChange = useCallback((e) => {
@@ -37,6 +45,7 @@ const TodoList = () => {
         placeholder="Cerca..."
         value={searchTerm}
         onChange={handleSearchChange}
+        ref={searchInputRef}
       />
       <ul>
         {filteredTodos.map((todo) => (
