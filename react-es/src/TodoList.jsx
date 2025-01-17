@@ -1,47 +1,38 @@
-import React from "react";
-import useFetch from "./hooks/useFetch";
-import useFilteredTodos from "./hooks/useFilteredTodos";
-import { useState, useCallback, useMemo, useRef, useEffect } from "react";
-
-const API_URL = "https://jsonplaceholder.typicode.com/todos";
+import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import { useTodos } from "./TodoContext";
 
 const TodoList = () => {
-  const { data, isLoading, error } = useFetch(API_URL);
-  const  [searchTerm, setSearchTerm] = useState("");
-
+  const { todos, isLoading, error } = useTodos(); // Accesso ai dati dal contesto
+  const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef(null);
-  
+
+  // Focus automatico sull'input
   useEffect(() => {
-    if (data && searchInputRef.current) {
+    if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  }, [data]);
-  
-  // Memorizza la funzione di gestione dell'input con useCallback
+  }, []);
+
+  // Gestione del cambio dell'input di ricerca
   const handleSearchChange = useCallback((e) => {
     setSearchTerm(e.target.value);
-  }, []); // Nessuna dipendenza: la funzione non cambi
+  }, []);
 
+  // Filtra i to-do usando useMemo per ottimizzare
   const filteredTodos = useMemo(() => {
-    if (!data) return []; // Gestisce il caso in cui i dati non sono ancora caricati
-    return data.filter((todo) =>
+    return todos.filter((todo) =>
       todo.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [data, searchTerm]); // Ricalcola solo quando `data` o `searchTerm` cambiano
+  }, [todos, searchTerm]);
 
-  if (isLoading) {
-    return <p>Caricamento in corso...</p>;
-  }
-
-  if (error) {
-    return <p>Errore: {error}</p>;
-  }
+  if (isLoading) return <p>Caricamento in corso...</p>;
+  if (error) return <p>Errore: {error}</p>;
 
   return (
     <div>
       <h1>Lista di To-Do</h1>
-      <input 
-        type="text" 
+      <input
+        type="text"
         placeholder="Cerca..."
         value={searchTerm}
         onChange={handleSearchChange}
@@ -49,11 +40,11 @@ const TodoList = () => {
       />
       <ul>
         {filteredTodos.map((todo) => (
-            <li key={todo.id}>
-              <strong>{todo.title}</strong> -{" "}
-              {todo.completed ? "Completato" : "Incompleto"}
-            </li>
-          ))}
+          <li key={todo.id}>
+            <strong>{todo.title}</strong> -{" "}
+            {todo.completed ? "Completato" : "Incompleto"}
+          </li>
+        ))}
       </ul>
     </div>
   );
